@@ -206,6 +206,7 @@ table.nowrap td {
 }
 
 #bank_suggest div {
+  display: inline-block;
   white-space: nowrap;
 }
 
@@ -442,6 +443,14 @@ div.field, div.actions {
   margin-bottom: 5px !important;
 }
 
+div.field {
+  position: relative;
+}
+
+div.field * {
+  vertical-align: middle;
+}
+
 
 .field_with_errors {
   display: inline-block !important;
@@ -495,6 +504,16 @@ div.field, div.actions {
   border: 1px solid gold;
 }
 
+.clear-field {
+  position: relative;
+  left: -24px;
+  vertical-align: middle;
+  margin: 3px 0;
+}
+
+.clear-target{
+  padding-right: 24px;
+}
 
 /**********************************************************
  * button

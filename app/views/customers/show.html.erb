@@ -51,11 +51,13 @@
 
     <p>
       <strong class="label">Bankname:</strong>
+      [<%= (@customer.bank.present?) ? @customer.bank.bankcode : ' ' %>]
       <%= (@customer.bank.present?) ? @customer.bank.bankname : '' %>
     </p>
 
     <p>
       <strong class="label">Branchname:</strong>
+      [<%= (@customer.bank.present?) ? @customer.bank.branchcode : ' ' %>]
       <%= (@customer.bank.present?) ? @customer.bank.branchname : '' %>
     </p>
 

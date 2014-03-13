@@ -152,8 +152,8 @@ pp whr
       @bank.save
       @customer.bank_id = @bank.id
       _c_params[:bank_id] = @bank.id
-pp _c_params
     end
+pp _c_params
 
     respond_to do |format|
       if @customer.update(_c_params)

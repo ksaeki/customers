@@ -80,6 +80,9 @@ console.log(json);
       title: 'モーダルダイアログ'
     });
   });
+  $(".clear-field").on('click', function() {
+    $(this).prev().val('');
+  });
 });
 </script>
 
@@ -141,20 +144,23 @@ console.log(json);
         <div class="field">
           <%= f.hidden_field :bank_id %>
           <%= label :bank, :bankname %>
-          <%= text_field :bank, :bankname, { :class => 'wide', :value => ((@customer.bank.present?) ? @customer.bank.bankname : '') } %>
+          <%= text_field :bank, :bankname, { :class => 'wide clear-target', :value => ((@customer.bank.present?) ? @customer.bank.bankname : '') } %>
+          <%= image_tag('/assets/cross.png', class: 'clear-field') %>
         </div>
         <div class="field">
           <%= label :bank, :branchname %>
-          <%= text_field :bank, :branchname, { :class => 'wide', :value => ((@customer.bank.present?) ? @customer.bank.branchname : '') } %>
+          <%= text_field :bank, :branchname, { :class => 'wide clear-target', :value => ((@customer.bank.present?) ? @customer.bank.branchname : '') } %>
+          <%= image_tag('/assets/cross.png', class: 'clear-field') %>
         </div>
         <div class="field">
-          <%= f.hidden_field :bank_id %>
           <%= label :bank, :bankcode %>
-          <%= text_field :bank, :bankcode, { :class => 'short', :value => ((@customer.bank.present?) ? @customer.bank.bankcode : '') } %>
+          <%= text_field :bank, :bankcode, { :class => 'short clear-target', :value => ((@customer.bank.present?) ? @customer.bank.bankcode : '') } %>
+          <%= image_tag('/assets/cross.png', class: 'clear-field') %>
         </div>
         <div class="field">
           <%= label :bank, :branchcode %>
-          <%= text_field :bank, :branchcode, { :class => 'short', :value => ((@customer.bank.present?) ? @customer.bank.branchcode : '') } %>
+          <%= text_field :bank, :branchcode, { :class => 'short clear-target', :value => ((@customer.bank.present?) ? @customer.bank.branchcode : '') } %>
+          <%= image_tag('/assets/cross.png', class: 'clear-field') %>
         </div>
         <div class="field">
           <%= f.label :holderid %>
@@ -162,7 +168,9 @@ console.log(json);
         </div>
         <div class="field">
           <%= label :bank, :address %>
-          <%= text_field :bank, :address, { :class => 'wide', :value => ((@customer.bank.present?) ? @customer.bank.address : '') } %>
+          <%= text_field :bank, :address, { :class => 'wide clear-target', :value => ((@customer.bank.present?) ? @customer.bank.address : '') } %>
+          <%= image_tag('/assets/cross.png', class: 'clear-field') %>
+
         </div>
         <div class="field">
           Input candidate : <br />
