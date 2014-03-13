@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Customers</title>
+  <%= stylesheet_link_tag    "application", media: "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div class="header">
+  <nav>
+    <a class="brand" href="/">::customer_management</a>
+
+<% if user_signed_in? %>
+    <ul>
+    <li><a href="/customers">Cunstomers</a></li>
+    <li><a href="/banks">Banks</a></li>
+    </ul>
+    <div class="login-container">
+      <%= content_tag(:span, current_user.username, { :class => 'login_user', :id => 'login_user', :style => 'color: #fff;vertical-align: middle;' }) %>
+      <%= link_to 'Logout', destroy_user_session_path, { :method => :delete, :class => "btn btn-mini" } %>
+   </div>
+<% else %>
+    <div class="login-container">
+      <%= content_tag(:span, 'Please login.', { :class => 'login_user', :id => 'login_user', :style => 'color: #fff;vertical-align: middle;' }) %>
+      <%= link_to 'Login', new_user_session_path, { :class => "btn btn-mini" } %>
+    </div>
+<% end %>
+  </nav>
+</div>
+
+<div class="messagearea<%= ' active' if notice.present? or alert.present? %> ">
+  <p class="notice<%= ' active' if notice.present? %>"><%= notice %></p>
+  <p class="alert<%= ' active' if alert.present? %>"><%= alert %></p>
+</div>
+
+<div class="container">
+<%= yield %>
+</div>
+<div id="modal" style="display:none;">
+  <div class="message"><p></p></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<h1>
+  Listing users
+  <span class="nav-link"><%= link_to 'New User', new_user_registration_path, { :class => "btn btn-small" } %></span>
+</h1>
+
+<table class="table-bordered result">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Username</th>
+      <th>EMail</th>
+      <th>role</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% idx = 0 %>
+    <% @users.each do |user| %>
+      <% idx += 1 %>
+      <tr>
+        <th class="text-right"><%= idx %></th>
+        <td><%= user.username %></td>
+        <td><%= user.email %></td>
+        <td><%= user.role %></td>
+        <td><%= link_to 'Edit', edit_user_registration_path(user), { :class => "btn_edit" } %></td>
+      </tr>
+
+    <% end %>
+  </tbody>
+</table>
+
+<br>&nbsp;
+
+<a href="#" class="top_link">[ Go to Top ]</a>

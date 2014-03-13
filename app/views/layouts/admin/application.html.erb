@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Customers</title>
+  <%= stylesheet_link_tag    "application", media: "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div class="header">
+  <nav>
+    <a class="brand" href="/">::customer_management</a>
+
+    <ul>
+    <li><a href="/customers">Cunstomers</a></li>
+    <li><a href="/banks">Banks</a></li>
+    </ul>
+  </nav>
+</div>
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
+<div class="container">
+<%= yield %>
+</div>
+
+</body>
+</html>

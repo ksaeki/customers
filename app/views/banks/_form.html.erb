@@ -1,0 +1,62 @@
+<script type="text/javascript">
+$(function(){
+  var elements = "input[type=text]";
+  $( "input[type='text'][type='radio']" ).on('keydown', function(e) {
+    var c = e.which ? e.which : e.keyCode;
+    if (c == 13) { 
+      var index = $(elements).index(this);
+      $(elements + ":gt(" + index + "):first").focus();
+      e.preventDefault();
+    }
+  });
+
+});
+</script>
+<%= form_for(@bank) do |f| %>
+  <% if @bank.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@bank.errors.count, "error") %> prohibited this bank from being saved:</h2>
+
+      <ul>
+      <% @bank.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="box-bordered">
+    <div class="caption">Bank info.</div>
+    <div class="field">
+      <%= f.label :bankname %>
+      <%= f.text_field :bankname, { :class => 'wide'} %>
+    </div>
+    <div class="field">
+      <%= f.label :branchname %>
+      <%= f.text_field :branchname, { :class => 'wide'} %>
+    </div>
+    <div class="field">
+      <%= f.label :bankcode %>
+      <%= f.text_field :bankcode, { :class => 'short'} %>
+    </div>
+    <div class="field">
+      <%= f.label :branccode %>
+      <%= f.text_field :branchcode, { :class => 'short'} %>
+    </div>
+    <div class="field">
+      <%= f.label :holdername %>
+      <%= f.text_field :holdername %>
+    </div>
+    <div class="field">
+      <%= f.label :swiftcode %>
+      <%= f.text_field :swiftcode %>
+    </div>
+    <div class="field">
+      <%= f.label :address %>
+      <%= f.text_field :address, { :class => 'wide'} %>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  </div>
+<% end %>

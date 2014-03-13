@@ -1,0 +1,290 @@
+<script type="text/javascript">
+$(function(){
+  request = null;
+
+  var elements = "input[type][type!='hidden'][type!='button'][type!='submit'][type!='reset']";
+  $( elements ).on('keydown', function(e) {
+    var c = e.which ? e.which : e.keyCode;
+    if (c == 13) { 
+      var idx = $(elements).index(this);
+      $(elements + ":gt(" + idx + "):first").focus();
+      e.preventDefault();
+      //e.stopPropagation();
+    }
+  });
+
+  $( "#generate_password" ).on('click', function(e) {
+    request = $.getJSON("/customers/password.json", function(json){
+console.log(json);
+      $( "#customer_password"    ).val(json.password); 
+    });
+  });
+  
+  $( "#bank_bankname, #bank_branchname, #bank_bankcode, #bank_branchcode, #bank_swiftcode, #bank_address" ).each(function(){
+    initCompletion(this, 'bank_suggest');
+  });
+  
+  $( "#bank_bankname, #bank_branchname, #bank_bankcode, #bank_branchcode, #bank_swiftcode, #bank_address" ).on('keyup', function(e) {
+    if (request) request.abort();
+
+    var input = this;
+    var c = e.which ? e.which : e.keyCode;
+    if (c != 13) {
+      $( "#customer_bank_id" ).val(''); 
+      if ($( "#customer_bank_id" ).val() != '')
+        $( "#bank_notice").removeClass('create').addClass('update')
+      else
+        $( "#bank_notice").removeClass('update').addClass('create')
+
+      data = {};
+      if ( $( "#bank_bankname" ).val()   != "") data['bankname']   =  $( "#bank_bankname" ).val();
+      if ( $( "#bank_branchname" ).val() != "") data['branchname'] =  $( "#bank_branchname" ).val();
+      if ( $( "#bank_bankcode" ).val()   != "") data['bankcode']   =  $( "#bank_bankcode" ).val();
+      if ( $( "#bank_branchcode" ).val() != "") data['branchcode'] =  $( "#bank_branchcode" ).val();
+      if ( $( "#bank_swiftcode" ).val()  != "") data['swiftcode']  =  $( "#bank_swiftcode" ).val();
+      if ( $( "#bank_address" ).val()    != "") data['address']    =  $( "#bank_address" ).val();
+      request = $.getJSON("/banks/search.json", data, function(json){
+        results = [];
+        for(var i = 0; i < json.length; i++) {
+          var str = '';
+          str += (json[i].bankname   ? json[i].bankname   : '&lt;not available&gt;') + ' : ';
+          str += (json[i].bankcode   ? json[i].bankcode   : '&lt;not available&gt;') + ' : ';
+          str += (json[i].branchname ? json[i].branchname : '&lt;not available&gt;') + ' : ';
+          str += (json[i].branchcode ? json[i].branchcode : '&lt;not available&gt;') + ' : ';
+          str += (json[i].swiftcode  ? json[i].swiftcode  : '&lt;not available&gt;') + ' : ';
+          str += (json[i].address    ? json[i].address    : '&lt;not available&gt;') + ' : ';
+          str += json[i].id;
+          results.push( str );
+        }
+        input.showCompletionItems(results, function(idx, val){
+          bankinfo = val.split(' : ');
+          for(var i=0; i < bankinfo.length; i++) {
+            if (bankinfo[i].match(/not available/i)) bankinfo[i] = '';
+          }
+          $( "#bank_bankname"    ).val(bankinfo[0]); 
+          $( "#bank_bankcode"    ).val(bankinfo[1]); 
+          $( "#bank_branchname"  ).val(bankinfo[2]); 
+          $( "#bank_branchcode"  ).val(bankinfo[3]); 
+          $( "#bank_swiftcode"   ).val(bankinfo[4]); 
+          $( "#bank_address"     ).val(bankinfo[5]); 
+          $( "#customer_bank_id" ).val(bankinfo[6]); 
+          $( "#bank_notice").removeClass('create').addClass('update');
+
+        });
+      });
+    }
+  });
+  $("#search_parent").click(function() {
+    $('#modal').dialog({
+      modal: true,
+      title: 'モーダルダイアログ'
+    });
+  });
+});
+</script>
+
+<div id="modal" style="display:none;">
+  dialog window
+</div>
+
+<%= form_for(@customer) do |f| %>
+  <% if @customer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@customer.errors.count, "error") %> prohibited this customer from being saved:</h2>
+
+      <ul>
+      <% @customer.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="clearfix">
+    <div class="left column clearfix">
+      <div class="box-bordered">
+        <div class="caption">Account info.</div>
+        <div class="field">
+          <%= f.label :accountid %>
+          <%= f.text_field :accountid %>
+        </div>
+        <div class="field">
+          <%= f.label :parentid %>
+          <%= f.text_field :parentid %>
+<!--
+          <%= button_tag(type: 'button', id: 'search_parent') do '<< Search' end %>
+-->
+        </div>
+        <div class="field">
+          <%= f.label :fullname %>
+          <%= f.text_field :fullname %>
+        </div>
+        <div class="field">
+          <%= f.label :password %>
+          <%= f.text_field :password %>
+          <%= button_tag(type: 'button', id: 'generate_password') do '<< Generate' end %>
+        </div>
+        <div class="field">
+          <%= f.label :userclass %>
+          <%= f.select :userclass, USER_CLASS %>
+        </div>
+      </div>
+      <br class="clearfix"/>
+
+      <div class="box-bordered">
+        <div class="caption">Bank info. <span id="bank_notice" class="<%= (@customer.bank_id.present?) ? 'update' : 'create' %>"></span></div>
+
+        <div class="field">
+          <%= label :bank, :swiftcode %>
+          <%= text_field :bank, :swiftcode, :value => ((@customer.bank.present?) ? @customer.bank.swiftcode : '') %>
+        </div>
+        <div class="field">
+          <%= f.hidden_field :bank_id %>
+          <%= label :bank, :bankname %>
+          <%= text_field :bank, :bankname, { :class => 'wide', :value => ((@customer.bank.present?) ? @customer.bank.bankname : '') } %>
+        </div>
+        <div class="field">
+          <%= label :bank, :branchname %>
+          <%= text_field :bank, :branchname, { :class => 'wide', :value => ((@customer.bank.present?) ? @customer.bank.branchname : '') } %>
+        </div>
+        <div class="field">
+          <%= f.hidden_field :bank_id %>
+          <%= label :bank, :bankcode %>
+          <%= text_field :bank, :bankcode, { :class => 'short', :value => ((@customer.bank.present?) ? @customer.bank.bankcode : '') } %>
+        </div>
+        <div class="field">
+          <%= label :bank, :branchcode %>
+          <%= text_field :bank, :branchcode, { :class => 'short', :value => ((@customer.bank.present?) ? @customer.bank.branchcode : '') } %>
+        </div>
+        <div class="field">
+          <%= f.label :holderid %>
+          <%= f.text_field :holderid %>
+        </div>
+        <div class="field">
+          <%= label :bank, :address %>
+          <%= text_field :bank, :address, { :class => 'wide', :value => ((@customer.bank.present?) ? @customer.bank.address : '') } %>
+        </div>
+        <div class="field">
+          Input candidate : <br />
+          <div id="bank_suggest" class="" style=""></div>
+        </div>
+      </div>
+  <div class="actions clearfix">
+    <%= f.submit %>
+  </div>
+    </div>
+
+    <div class="left column lborder clearfix">
+      <div class="box-bordered">
+        <div class="caption">Personal info.</div>
+
+<!--
+        <div class="field">
+          <%= f.label :zipcode %>
+          <%= f.text_field :zipcode, { :class => 'short'} %>
+        </div>
+-->
+        <div class="field">
+          <%= f.label :address %>
+          <%= f.text_field :address, { :class => 'wide'} %>
+        </div>
+<!--
+        <div class="field">
+          <%= f.label :country %>
+          <%= f.text_field :country %>
+        </div>
+-->
+        <div class="field">
+          <%= f.label :nationality %>
+          <%= f.text_field :nationality %>
+        </div>
+        <div class="field">
+          <%= f.label :birthday %>
+          <%= f.date_select :birthday %>
+        </div>
+        <div class="field">
+          <%= f.label :sex %>
+          <%= f.radio_button :sex, 'male',   { :id => 'customer_sex_m' } %>
+          <%= f.label 'sex_m', 'Male', :class => 'autowidth' %>
+          <%= f.radio_button :sex, 'female', { :id => 'customer_sex_f'} %>
+          <%= f.label 'sex_f', 'Female', :class => 'autowidth' %>
+        </div>
+        <div class="field">
+        </div>
+        <div class="field">
+          <%= f.label :tel %>
+          <%= f.text_field :tel %>
+        </div>
+        <div class="field">
+          <%= f.label :fax %>
+          <%= f.text_field :fax %>
+        </div>
+        <div class="field">
+          <%= f.label :mobile %>
+          <%= f.text_field :mobile %>
+        </div>
+        <div class="field">
+          <%= f.label :email %>
+          <%= f.text_field :email, { :class => 'wide'} %>
+        </div>
+        <div class="field">
+          <%= f.label :service1 %>
+          <%= f.select :service1, SERVICES, :include_blank => true %>
+        </div>
+        <div class="field">
+          <%= f.label :cbc %>
+          <%= f.text_field :cbc %>
+        </div>
+      </div>
+      <br />
+
+      <div class="box-bordered">
+        <div class="caption">Remark</div>
+        <div class="field">
+          <%= f.text_area :remark, { :style => 'width: 420px; height: 110px;'} %>
+        </div>
+      </div>
+      <br />
+
+<%= form_tag('/upload', { :method => 'post', :multipart => true }) do %>
+  <%= hidden_field_tag 'id', @customer.id  %>
+      <div class="box-bordered">
+        <div class="caption">Attachment Files</div>
+        <div class="field">
+          <div class="attachment_header">
+            <span class='selected-filename'></span>
+            <ul class='right'>
+              <li><%= image_tag('/assets/download.png', class: 'download btn btn-mini') %> </li>
+              <li><%= image_tag('/assets/delete.png', class: 'detach btn btn-mini') %> </li>
+            </ul>
+          </div>
+
+          <div id="dropbox" class="attachment dropzone" onselectstart="return false">
+            <% if @customer.attachments.present? %>
+              <% @customer.attachments.each do |attach| %>
+<div class="dz-preview dz-file-preview dz-processing" title="<%= attach.filename %> (<%= number_to_human_size(attach.filesize) %>)" data-id="<%= attach.id %>">
+  <div class="dz-details <%= attach.extension %>">
+    <div class="dz-filename"><span data-dz-name=""></span></div>
+    <div class="dz-size" data-dz-size=""><%= attach.filesize %></div>
+    <img data-dz-thumbnail="">
+  </div>
+  <div class="dz-progress" style="display: none;"><span class="dz-upload" data-dz-uploadprogress=""></span></div>
+  <div class="dz-success-mark"></div>
+  <div class="dz-error-mark"></div>
+  <div class="dz-error-message"><span data-dz-errormessage=""></span></div>
+</div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+<% end %>
+
+    </div>
+  </div>
+
+<% end %>
+
+<br class="clearfix" />
+<div id="totalProgress" class="progress clearfix"><div class="bar" style="width: 0%;"></div></div>
+

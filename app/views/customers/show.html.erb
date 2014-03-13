@@ -1,0 +1,146 @@
+<h1>
+  Show customer
+  <span class="nav-link"><%= link_to '<', prev_customer_path, { :class => "btn btn-small" } %></span>
+  <span class="nav-link"><%= link_to '>', next_customer_path, { :class => "btn btn-small" } %></span>
+  <span class="nav-link"><%= link_to 'Edit', edit_customer_path(@customer), { :class => "btn btn-small" } %></span>
+  <span class="nav-link"><%= link_to 'Back', customers_path, { :class => "btn btn-small" } %></span>
+</h1>
+<!--
+<%= link_to 'Edit', edit_customer_path(@customer) %> |
+<%= link_to 'Back', customers_path %>
+-->
+<p id="notice"><%= notice %></p>
+
+<div class="left column clearfix">
+  <div class="box-bordered">
+    <p>
+      <strong class="label">Accountid:</strong>
+      <%= @customer.accountid %>
+    </p>
+
+    <p>
+      <strong class="label">Fullname:</strong>
+      <%= @customer.fullname %>
+    </p>
+
+    <p>
+      <strong class="label">Password:</strong>
+      <%= @customer.password %>
+    </p>
+
+    <p>
+      <strong class="label">User Class:</strong>
+      <%= (@customer.userclass.present?) ? USER_CLASS.key(@customer.userclass) : '' %>
+    </p>
+
+    <p>
+      <strong class="label">Parentid:</strong>
+      <%= @customer.parentid %>
+    </p>
+
+    <hr />
+    <p>
+      <strong class="label">Bank:</strong>
+      <%= @customer.bank_id %>
+    </p>
+
+    <p>
+      <strong class="label">SWIFTCode:</strong>
+      <%= (@customer.bank.present?) ? @customer.bank.swiftcode : '' %>
+    </p>
+
+    <p>
+      <strong class="label">Bankname:</strong>
+      <%= (@customer.bank.present?) ? @customer.bank.bankname : '' %>
+    </p>
+
+    <p>
+      <strong class="label">Branchname:</strong>
+      <%= (@customer.bank.present?) ? @customer.bank.branchname : '' %>
+    </p>
+
+    <p>
+      <strong class="label">HolderID:</strong>
+      <%= @customer.holderid %>
+    </p>
+
+    <p>
+      <strong class="label">Address:</strong>
+      <%= (@customer.bank.present?) ? @customer.bank.address : '' %>
+    </p>
+
+    <hr />
+
+    <p>
+      <strong class="label">Service:</strong>
+      <%= (@customer.service1.present?) ? SERVICES.key(@customer.service1) : '' %>
+    </p>
+
+    <p>
+      <strong class="label">Cbc:</strong>
+      <%= @customer.cbc %>
+    </p>
+  </div>
+</div>
+
+
+<div class="left column clearfix">
+  <div class="box-bordered clearfix">
+
+    <p>
+      <strong class="label">Zipcode:</strong>
+      <%= @customer.zipcode %>
+    </p>
+
+    <p>
+      <strong class="label">Address:</strong>
+      <%= @customer.address %>
+    </p>
+
+    <p>
+      <strong class="label">Country:</strong>
+      <%= @customer.country %>
+    </p>
+
+    <p>
+      <strong class="label">Birthday:</strong>
+      <%= @customer.birthday %>
+    </p>
+
+    <p>
+      <strong class="label">Sex:</strong>
+      <%= @customer.sex %>
+    </p>
+
+    <p>
+      <strong class="label">Nationality:</strong>
+      <%= @customer.nationality %>
+    </p>
+
+    <p>
+      <strong class="label">Tel:</strong>
+      <%= @customer.tel %>
+    </p>
+
+    <p>
+      <strong class="label">Fax:</strong>
+      <%= @customer.fax %>
+    </p>
+
+    <p>
+      <strong class="label">Mobile:</strong>
+      <%= @customer.mobile %>
+    </p>
+
+    <p>
+      <strong class="label">Email:</strong>
+      <%= @customer.email %>
+    </p>
+
+
+    <p>
+      <strong class="label" style="vertical-align: top;">Remark:</strong>
+      <textarea style="display: inline-block;vertical-align: top;border: 1px solid #999;min-width:300px;min-height:100px;" readonly><%= @customer.remark %></textarea>
+    </p>
+  </div>
+</div>

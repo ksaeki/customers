@@ -1,0 +1,38 @@
+<h1>
+  Show bank
+  <span class="nav-link"><%= link_to 'Edit', edit_bank_path(@bank), { :class => "btn btn-small" } %></span>
+  <span class="nav-link"><%= link_to 'Back', banks_path, { :class => "btn btn-small" } %></span>
+</h1>
+<!--
+<%= link_to 'Edit', edit_customer_path(@customer) %> |
+<%= link_to 'Back', customers_path %>
+-->
+<p id="notice"><%= notice %></p>
+
+<div class="box-bordered">
+
+  <p>
+    <strong class="label">Bankname:</strong class="label">
+    <%= @bank.bankname %>
+  </p>
+
+  <p>
+    <strong class="label">Branchname:</strong class="label">
+    <%= @bank.branchname %>
+  </p>
+
+  <p>
+    <strong class="label">Holdername:</strong class="label">
+    <%= @bank.holdername %>
+  </p>
+
+  <p>
+    <strong class="label">Swiftcode:</strong class="label">
+    <%= @bank.swiftcode %>
+  </p>
+
+  <p>
+    <strong class="label">Address:</strong class="label">
+    <%= @bank.address %>
+  </p>
+</div>
