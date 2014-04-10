@@ -22,6 +22,16 @@ html, body, h1, h2, h3, h4, h5, h6 {
   padding: 0;  
 }
 
+body {
+/*
+  background-image: url('/assets/culms_bg.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: right bottom;
+  background-color:rgba(255,255,255,0.2);
+*/	
+}
+
 h1 {
   border-left: 10px solid #333;
   border-bottom: 3px solid #333;
@@ -89,7 +99,7 @@ h4 {
   -webkit-border-radius: 3px; 
   border: 1px solid #bbbbbb;
   background: #fff;
-  margin-left: 10px;
+  margin: 0;
   padding: 2px 5px;
 }
 
@@ -688,4 +698,5 @@ a.btn {
 .column  { margin-left: 10px; }
 .lborder { border-left: 1px solid #bbb; padding-left: 10px; }
 div.inline  { display: inline-block; }
+div.auto-width { width: auto; }
 

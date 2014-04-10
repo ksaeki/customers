@@ -31,6 +31,12 @@ pp '*****'
 pp whr
         @customers = @customers.where(whr.join(" or "))
 #      end
+    else
+      if (@conditions[:multipleid].present?)
+pp @conditions[:multipleid].split("\r\n")
+        word = " accountid in ('" + @conditions[:multipleid].split("\r\n").join("', '") + "')"
+        @customers = @customers.where(word)
+      end
     end
 
     # Optional conditions.

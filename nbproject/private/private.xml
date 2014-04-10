@@ -6,22 +6,31 @@
             <file>file:/C:/_rails/customers/app/views/users/index.html.erb</file>
             <file>file:/C:/_rails/customers/app/assets/stylesheets/dropzone.css</file>
             <file>file:/C:/_rails/customers/app/views/layouts/application.html.erb</file>
-            <file>file:/C:/_rails/customers/app/views/customers/_form.html.erb</file>
             <file>file:/C:/_rails/customers/app/controllers/banks_controller.rb</file>
             <file>file:/C:/_rails/customers/app/views/customers/index.html.erb</file>
-            <file>file:/C:/_rails/customers/app/controllers/customers_controller.rb</file>
             <file>file:/C:/_rails/customers/app/models/attachment.rb</file>
             <file>file:/C:/_rails/customers/app/controllers/application_controller.rb</file>
             <file>file:/C:/_rails/customers/app/models/bank.rb</file>
+            <file>file:/C:/_rails/customers/app/views/banks/index.html.erb</file>
             <file>file:/C:/_rails/customers/app/assets/stylesheets/application.css</file>
             <file>file:/C:/_rails/customers/app/models/user.rb</file>
-            <file>file:/C:/_rails/customers/app/controllers/users_controller.rb</file>
             <file>file:/C:/_rails/customers/app/assets/javascripts/import.js</file>
+            <file>file:/C:/_rails/customers/app/controllers/users_controller.rb</file>
             <file>file:/C:/_rails/customers/app/assets/javascripts/application.js</file>
-            <file>file:/C:/_rails/customers/config/routes.rb</file>
-            <file>file:/C:/_rails/customers/app/controllers/utility_controller.rb</file>
+            <file>file:/C:/_rails/customers/app/views/customers/show.html.erb</file>
             <file>file:/C:/_rails/customers/app/models/customer.rb</file>
+            <file>file:/C:/_rails/customers/app/controllers/utility_controller.rb</file>
             <file>file:/C:/_rails/customers/config/environments/development.rb</file>
+            <file>file:/C:/_rails/customers/app/views/customers/_form.html.erb</file>
+            <file>file:/C:/_rails/customers/app/views/dushboard/index.html.erb</file>
+            <file>file:/C:/_rails/customers/app/views/customers/edit.html.erb</file>
+            <file>file:/C:/_rails/customers/app/views/banks/search.json.jbuilder</file>
+            <file>file:/C:/_rails/customers/app/controllers/customers_controller.rb</file>
+            <file>file:/C:/_rails/customers/Gemfile</file>
+            <file>file:/C:/_rails/customers/app/controllers/dushboard_controller.rb</file>
+            <file>file:/C:/_rails/customers/config/application.rb</file>
+            <file>file:/C:/_rails/customers/config/routes.rb</file>
+            <file>file:/C:/_rails/customers/app/views/banks/show.html.erb</file>
         </group>
     </open-files>
 </project-private>

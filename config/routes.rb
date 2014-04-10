@@ -1,4 +1,6 @@
 Customers::Application.routes.draw do
+  get "dushboard/index"
+  get "dushboard",   to: 'dushboard#index'
   devise_for :users
 
   resources :users, :only => :index
@@ -81,6 +83,6 @@ Customers::Application.routes.draw do
   #     resources :products
   #   end
   
-  root :to => 'customers#index'
+  root :to => 'dushboard#index'
 
 end
