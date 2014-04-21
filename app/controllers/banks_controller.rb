@@ -7,9 +7,11 @@ class BanksController < ApplicationController
     require 'pp'
     @banks = Bank.all
     @conditions = params[:conditions] || session[:bank_conditions] || {}
+    @order = params[:order] || session[:bank_order] || {column: '', type: ''}
     @keyword = @conditions[:keyword];
 
     session[:bank_conditions] = @conditions if @conditions.present?
+    session[:bank_order]      = @order      if @order.present?
 
     @total_count = @banks.size
     if (@keyword.present?)
@@ -38,7 +40,12 @@ class BanksController < ApplicationController
 
     @retrieve_count = @banks.size
 
-    # Show all customers.
+    # Set an order.
+    if (@order.present?)
+      @banks = @banks.order(@order[:column] + ' ' + @order[:type])
+    end
+
+    # Show all banks.
     if (@conditions[:removelimit].blank? or @conditions[:removelimit] != 'true')
       @banks = @banks.limit(100)
     end

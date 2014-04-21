@@ -11,29 +11,25 @@ pp ['REF:' + request.referer.to_s]
     @total_count = Customer.all.size
     @customers = Customer.includes(:bank)
     @conditions = params[:conditions] || session[:customer_conditions] || {}
+    @order = params[:order] || session[:customer_order] || {column: '', type: ''}
     @keyword = @conditions[:keyword];
 
     session[:customer_conditions] = @conditions if @conditions.present?
+    session[:customer_order]     = @order     if @order.present?
 
     # Basic conditions.
     if (@conditions[:keyword].present?)
-pp '+++++' + @conditions[:keyword]
 #      @conditions[:keyword].split(' ') do |word|
       word = @conditions[:keyword]
-pp '@@@@@'
         kwd = '%' + word.gsub(/[!%_]/) { |x| '!' + x } + '%'
-pp kwd
         whr = []
         %w(accountid fullname banks.bankname parentid).each do |col|
           whr.push("#{col} like '#{kwd}' escape '!'")
         end
-pp '*****'
-pp whr
         @customers = @customers.where(whr.join(" or "))
 #      end
     else
       if (@conditions[:multipleid].present?)
-pp @conditions[:multipleid].split("\r\n")
         word = " accountid in ('" + @conditions[:multipleid].split("\r\n").join("', '") + "')"
         @customers = @customers.where(word)
       end
@@ -50,6 +46,13 @@ pp @conditions[:multipleid].split("\r\n")
       @customers = @customers.where(whr.join(" or "))
     end
     @retrieve_count = @customers.size
+
+    # Set an order.
+    if (@order.present?)
+#      @customers = @customers.order(@order.map{ |key, val| key + ' ' + val }.join(', '))
+      @customers = @customers.order(@order[:column] + ' ' + @order[:type])
+    end
+    @display_count = @customers.size
 
     # Show all customers.
     if (@conditions[:removelimit].blank? or @conditions[:removelimit] != 'true')

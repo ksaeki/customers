@@ -5,6 +5,12 @@ $(function(){
     $( "form" ).get(0).submit(); 
   });
   
+  $( ".sort-btn"  ).on('click', function(e) {
+//    alert($(this).data('type'));
+    $("#order_column").val($(this).data('column'));
+    $("#order_type").val($(this).data('type'));
+    $("form.condition").submit();
+  });
 });
 </script>
 <h1>
@@ -12,8 +18,10 @@ $(function(){
   <span class="nav-link"><%= link_to 'New Customer', new_customer_path, { :class => "btn btn-small" } %></span>
 </h1>
 
-<div class="container-bordered">
-  <%= form_tag({:action => 'index'}, {method: "get", class: 'condition form-inline form-horizontal'}) do %>
+<%= form_tag({:action => 'index'}, {method: "get", class: 'condition form-inline form-horizontal'}) do %>
+  <div class="container-bordered">
+    <%= hidden_field_tag 'order[column]', @order[:column]  %>
+    <%= hidden_field_tag 'order[type]', @order[:type]  %>
     <%= content_tag(:span, ((@conditions[:incomplete].present? or @conditions[:removelimit].present?) ? '-' : '+'), { :class => "btn btn-small", :id => 'option_button', :title => 'Show options.' }) %>
     <label>Keyword <%= text_field_tag('conditions[keyword]', @conditions[:keyword], {:size => 30, :class => "span2"}) %> </label> <%= submit_tag "Search", :class => "btn" %>
     <div class="inline" style="height: 100%;"><%= @retrieve_count %> / <%= @total_count %></div>
@@ -30,113 +38,113 @@ $(function(){
       <span style="color: #bbb;">( If unchecked, only the first 100 will be displayed. )</span>
       
     <% end %>
-  <% end %>
-</div>
+  </div>
 
-<div class="text-right">
-</div>
+  <div class="text-right">
+  </div>
 
-<table class="table-bordered result">
-  <thead>
-    <tr>
-      <th>No.</th>
-      <th>Accountid</th>
-      <th>Fullname</th>
-<!--
-      <th>Password</th>
-      <th>Zipcode</th>
-      <th>Country</th>
--->
-      <th>Address</th>
-      <th>ParentID</th>
-      <th>Bank</th>
-      <th>Branch</th>
-      <th>Account Holder ID</th>
-      <th>SWIFT Code</th>
-      <th>Bank Address</th>
-      
-<!--
-      <th>Birthday</th>
-      <th>Sex</th>
-      <th>Nationality</th>
-      <th>Tel</th>
-      <th>Fax</th>
-      <th>Mobile</th>
-      <th>Email</th>
-      <th>Parentid</th>
-      <th>Service1</th>
-      <th>Service2</th>
-      <th>Cbc</th>
--->
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% idx = 0 %>
-    <% @customers.each do |customer| %>
-      <% idx += 1 %>
+  <table class="table-bordered result">
+    <thead>
       <tr>
-        <th class="text-right"><%= idx %></th>
-        <td><%=raw (@keyword.present? and customer.accountid.present?) ? customer.accountid.gsub(/(#{@keyword})/i, '<span class="keyword">\1</span>') : customer.accountid %></td>
-        <td><%=raw (@keyword.present? and customer.fullname.present?)  ? customer.fullname.gsub( /(#{@keyword})/i, '<span class="keyword">\1</span>') : customer.fullname  %></td>
-        <td><%= customer.address %></td>
-        <td><%=raw (@keyword.present? and customer.parentid.present?)  ? customer.parentid.gsub( /(#{@keyword})/i, '<span class="keyword">\1</span>') : customer.parentid  %></td>
-<!--
-        <td><%= customer.password %></td>
-        <td><%= customer.zipcode %></td>
-        <td><%= customer.country %></td>
--->
-        
-      <% if customer.bank.present? %>
-        <td><%=raw (@keyword.present? and customer.bank.bankname.present?) ? customer.bank.bankname.gsub(/(#{@keyword})/i, '<span class="keyword">\1</span>') : customer.bank.bankname %></td>
-        <td><%= customer.bank.branchname %></td>
-        <td><%= customer.holderid %></td>
-        <td><%= customer.bank.swiftcode %></td>
-        <td><%= customer.bank.address %></td>
-      <% else %>
-        <td></td>
-        <td></td>
-        <td><%= customer.holderid %></td>
-        <td></td>
-        <td></td>
+        <th>No.</th>
+        <th>Accountid<%= sort_button('accountid', @order) %></th>
+        <th>Fullname<%= sort_button('fullname', @order) %></th>
+  <!--
+        <th>Password</th>
+        <th>Zipcode</th>
+        <th>Country</th>
+  -->
+        <th>Address<%= sort_button('address', @order) %></th>
+        <th>ParentID<%= sort_button('parentid', @order) %></th>
+        <th>Bank</th>
+        <th>Branch</th>
+        <th>Account Holder ID</th>
+        <th>SWIFT Code</th>
+        <th>Bank Address</th>
+
+  <!--
+        <th>Birthday</th>
+        <th>Sex</th>
+        <th>Nationality</th>
+        <th>Tel</th>
+        <th>Fax</th>
+        <th>Mobile</th>
+        <th>Email</th>
+        <th>Parentid</th>
+        <th>Service1</th>
+        <th>Service2</th>
+        <th>Cbc</th>
+  -->
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% idx = 0 %>
+      <% @customers.each do |customer| %>
+        <% idx += 1 %>
+        <tr>
+          <th class="text-right"><%= idx %></th>
+          <td><%=raw (@keyword.present? and customer.accountid.present?) ? customer.accountid.gsub(/(#{@keyword})/i, '<span class="keyword">\1</span>') : customer.accountid %></td>
+          <td><%=raw (@keyword.present? and customer.fullname.present?)  ? customer.fullname.gsub( /(#{@keyword})/i, '<span class="keyword">\1</span>') : customer.fullname  %></td>
+          <td><%= customer.address %></td>
+          <td><%=raw (@keyword.present? and customer.parentid.present?)  ? customer.parentid.gsub( /(#{@keyword})/i, '<span class="keyword">\1</span>') : customer.parentid  %></td>
+  <!--
+          <td><%= customer.password %></td>
+          <td><%= customer.zipcode %></td>
+          <td><%= customer.country %></td>
+  -->
+
+        <% if customer.bank.present? %>
+          <td><%=raw (@keyword.present? and customer.bank.bankname.present?) ? customer.bank.bankname.gsub(/(#{@keyword})/i, '<span class="keyword">\1</span>') : customer.bank.bankname %></td>
+          <td><%= customer.bank.branchname %></td>
+          <td><%= customer.holderid %></td>
+          <td><%= customer.bank.swiftcode %></td>
+          <td><%= customer.bank.address %></td>
+        <% else %>
+          <td></td>
+          <td></td>
+          <td><%= customer.holderid %></td>
+          <td></td>
+          <td></td>
+        <% end %>
+
+  <!--
+          <td><%= customer.birthday %></td>
+          <td><%= customer.sex %></td>
+          <td><%= customer.nationality %></td>
+          <td><%= customer.tel %></td>
+          <td><%= customer.fax %></td>
+          <td><%= customer.mobile %></td>
+          <td><%= customer.email %></td>
+          <td><%= customer.parentid %></td>
+          <td><%= customer.service1 %></td>
+          <td><%= customer.service2 %></td>
+          <td><%= customer.cbc %></td>
+  -->
+          <td><%= link_to 'Show', customer,  class: "btn_show" %></td>
+          <td><%= link_to 'Edit', edit_customer_path(customer), { :class => "btn_edit" } %></td>
+          <td><%= link_to 'Destroy', customer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+
       <% end %>
-        
-<!--
-        <td><%= customer.birthday %></td>
-        <td><%= customer.sex %></td>
-        <td><%= customer.nationality %></td>
-        <td><%= customer.tel %></td>
-        <td><%= customer.fax %></td>
-        <td><%= customer.mobile %></td>
-        <td><%= customer.email %></td>
-        <td><%= customer.parentid %></td>
-        <td><%= customer.service1 %></td>
-        <td><%= customer.service2 %></td>
-        <td><%= customer.cbc %></td>
--->
-        <td><%= link_to 'Show', customer,  class: "btn_show" %></td>
-        <td><%= link_to 'Edit', edit_customer_path(customer), { :class => "btn_edit" } %></td>
-        <td><%= link_to 'Destroy', customer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+    </tbody>
+    <tfoot>
+      <% if @display_count < @retrieve_count %>
+        <tr>
+          <th class="text-center">:</th>
 
-    <% end %>
-  </tbody>
-  <tfoot>
-    <% if @display_count < @retrieve_count %>
-      <tr>
-        <th class="text-center">:</th>
-
-        <td colspan="12">
-          <span style="color: #f63;">Subsequent data has been omitted.</span>
-          <span id="show_more" class="btn btn-mini"> more...</span>
-        </td>
-      </tr>
-    <% end %>
-  </tfoot>
-</table>
+          <td colspan="12">
+            <span style="color: #f63;">Subsequent data has been omitted.</span>
+            <span id="show_more" class="btn btn-mini"> more...</span>
+          </td>
+        </tr>
+      <% end %>
+    </tfoot>
+  </table>
+<% end %>
 
 <br>&nbsp;
 

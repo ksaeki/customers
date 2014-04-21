@@ -679,6 +679,18 @@ a.btn {
   text-decoration: none;
   vertical-align: bottom;
 }
+
+.sort-col{
+  float: right;
+  line-height: 10px;
+  margin-left: 5px;
+}
+.sort-btn{
+  width: 13px; 
+  height:8px; 
+  margin: 0; 
+  padding: 0;
+}
 /**********************************************************
  * !important
  **********************************************************/

@@ -47,21 +47,31 @@ function showDialog(title, message) {
 
 
 $(function(){
-  $( 'table.result > tbody > tr' ).on('click', function(e) {
-    $( 'table.result > tbody > tr' ).removeClass('active');
-    $(this).addClass('active');
-  });
-
-  $( 'table.result > tbody > tr' ).on('dblclick', function(e) {
-    if ($(this).find('.btn_edit').length) {
-      document.location = $(this).find('.btn_edit').attr('href');
+  // ---------------------------------------
+  // テーブル行ハイライト制御用
+  // ---------------------------------------
+  $( 'table.result > tbody > tr' ).on({
+    'click': function(e) {
+      $( 'table.result > tbody > tr' ).removeClass('active');
+      $(this).addClass('active');
+    },
+    'dblclick': function(e) {
+      if ($(this).find('.btn_edit').length) {
+        document.location = $(this).find('.btn_edit').attr('href');
+      }
     }
   });
 
+  // ---------------------------------------
+  // 検索オプション開閉スイッチ
+  // ---------------------------------------
   $( '#option_button' ).on('click', function(e) {
     toggleOptions();
   });
 
+  // ---------------------------------------
+  // 表示制限解除用リンク
+  // ---------------------------------------
   $( '#show_more' ).on('click', function(e) {
     $( '#options_removelimit'    ).attr('checked', 'checked'); 
     $( 'form' ).get(0).submit(); 
@@ -69,6 +79,9 @@ $(function(){
 
   $(".messagearea.active").delay(10000).fadeOut();
 
+  // ---------------------------------------
+  // 添付ファイルダウンロード/削除用ボタン
+  // ---------------------------------------
   $( ".attachment_header .detach" ).on('click', function(e) {
     if ($( ".dropzone .dz-preview").is(".active" )) {
       if (window.confirm( "Are you sure?" )) {
@@ -78,7 +91,7 @@ $(function(){
             "cache" : false,
             "dataType" : "json",
             "success" : function(result) {
-              if (result.result == 'success') {
+              if (result.result === 'success') {
                 $( ".dropzone .dz-preview[data-id='" + result.aid + "']" ).remove();
               } else {
                 alert(result.message);
@@ -97,6 +110,9 @@ $(function(){
     }
   });
 
+  // ---------------------------------------
+  // 添付ファイルカーソル制御 (Dropzone.js)
+  // ---------------------------------------
   $( ".dropzone" ).on({
     'click': function(e) {
       $(this).siblings().removeClass('active');
@@ -126,6 +142,16 @@ $(function(){
       text: "Ok", 
       click: function() { $( this ).dialog( "close" ); } 
     }]
+  });
+
+  // ---------------------------------------
+  // ソートボタン有効化
+  // ---------------------------------------
+  $( ".sort-btn"  ).on('click', function(e) {
+//    alert($(this).data('type'));
+    $("#order_column").val($(this).data('column'));
+    $("#order_type").val($(this).data('type'));
+    $("form.condition").submit();
   });
 
 });
