@@ -3,9 +3,9 @@ defaults: &defaults
   encoding: utf8
   reconnect: false
   pool: 5
-  username: customers
-  password: password
   host: localhost
+  username: customers
+  password:
 
 
 development:
