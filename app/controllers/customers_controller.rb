@@ -13,6 +13,7 @@ pp ['REF:' + request.referer.to_s]
     @conditions = params[:conditions] || session[:customer_conditions] || {}
     @order = params[:order] || session[:customer_order] || {column: '', type: ''}
     @keyword = @conditions[:keyword];
+pp [@order]
 
     session[:customer_conditions] = @conditions if @conditions.present?
     session[:customer_order]     = @order     if @order.present?
@@ -62,7 +63,22 @@ pp ['REF:' + request.referer.to_s]
 
     respond_to do |format|
       format.html
-      format.csv { send_data @customers.to_csv, type: 'text/csv; charset=shift_jis', filename: "customers_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv" }
+      format.csv { send_data @customers.to_csv,   type: 'text/csv; charset=shift_jis', filename: "customers_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv" }
+      format.xls { 
+        @created = Time.now.strftime( "%Y/%m/%d %H:%M:%S" )
+        @accepted = Time.now.yesterday.strftime( "%Y-%m-%dT%H:%M:%S" )
+        @xml = render_to_string :template  => 'customers/withdrawal.xml.erb', :locals => {:customers => @customers};
+        filename = 'withdrawal_' + Time.now.strftime( "%Y%m%d%H%M%S" ) + '.xls';
+
+        send_data(
+          @xml, 
+          :type => 'application/vnd.ms-excel', 
+          :disposition => 'inline', 
+          :disposition => 'attachment', 
+          :filename => CGI.escape(filename), 
+          :status => 200
+        )
+      }
     end
   end
 
@@ -99,6 +115,11 @@ pp ['REF:' + request.referer.to_s]
   def new
     @customer = Customer.new
     @banks = Bank.all.order('bankname, branchname')
+
+    if @customer.save(:validate => false)
+pp [ @customer.id]
+      redirect_to "/customers/#{@customer.id}/edit"
+    end
   end
 
   # GET /customers/1/edit
@@ -183,6 +204,10 @@ pp _c_params
       format.html { redirect_to customers_url }
       format.json { head :no_content }
     end
+  end
+
+  def gc
+    Customer.destroy_all(accountid: nil, fullname: nil, password: nil)
   end
 
   private

@@ -27,6 +27,7 @@ $(function(){
     <div class="inline" style="height: 100%;"><%= @retrieve_count %> / <%= @total_count %></div>
     &nbsp;&gt;&nbsp;
     <%= link_to 'CSV Download', customers_path(format: 'csv', keyword: @conditions[:keyword]), { :class => "btn" } %>
+    <%= link_to 'Withdrawal Report', customers_path(format: 'xls', keyword: @conditions[:keyword]), { :class => "btn" } %>
 
     <% opt_status = (@conditions[:incomplete].present? or @conditions[:removelimit].present?) ? ' active' : '' %>
     <%= content_tag(:div, { :class => "options#{opt_status}", :id => 'option_container' }) do %>
@@ -75,6 +76,9 @@ $(function(){
         <th>Service2</th>
         <th>Cbc</th>
   -->
+        <th>Created At<%= sort_button('created_at', @order) %></th>
+        <th>Updated At<%= sort_button('updated_at', @order) %></th>
+
         <th></th>
         <th></th>
         <th></th>
@@ -124,6 +128,9 @@ $(function(){
           <td><%= customer.service2 %></td>
           <td><%= customer.cbc %></td>
   -->
+          <td class="nowrap"><%=raw customer.created_at.to_s(:multiline) %></td>
+          <td class="nowrap"><%=raw customer.updated_at.to_s(:multiline) %></td>
+
           <td><%= link_to 'Show', customer,  class: "btn_show" %></td>
           <td><%= link_to 'Edit', edit_customer_path(customer), { :class => "btn_edit" } %></td>
           <td><%= link_to 'Destroy', customer, method: :delete, data: { confirm: 'Are you sure?' } %></td>

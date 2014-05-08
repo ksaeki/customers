@@ -8,3 +8,9 @@ module ApplicationHelper
     end         
   end                                             
 end
+
+class NilClass
+  def to_s(*args)
+    ""
+  end
+end

@@ -5,6 +5,8 @@ Customers::Application.routes.draw do
 
   resources :users, :only => :index
 
+  post  'branches', to: 'banks#branches'
+
   get  'download/:aid(/:forced)', to: 'utility#download'
   get  'download/:aid', to: 'utility#download'
   post 'upload',   to: 'utility#upload'
@@ -12,6 +14,7 @@ Customers::Application.routes.draw do
 
   resources :banks do
     collection do
+      get 'branches'
       get 'search'
     end
   end
@@ -22,6 +25,7 @@ Customers::Application.routes.draw do
       get 'next'
     end
     collection do
+      get 'gc'
       get 'password'
       post 'upload'
     end

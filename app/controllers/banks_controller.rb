@@ -6,6 +6,8 @@ class BanksController < ApplicationController
   def index
     require 'pp'
     @banks = Bank.all
+    #@banks = Bank.select("count(*) as cnt, bankname, bankcode").group(:bankname, :bankcode)
+
     @conditions = params[:conditions] || session[:bank_conditions] || {}
     @order = params[:order] || session[:bank_order] || {column: '', type: ''}
     @keyword = @conditions[:keyword];
@@ -13,7 +15,7 @@ class BanksController < ApplicationController
     session[:bank_conditions] = @conditions if @conditions.present?
     session[:bank_order]      = @order      if @order.present?
 
-    @total_count = @banks.size
+    @total_count = @banks.length
     if (@keyword.present?)
         kwd = '%' + @keyword.gsub(/[!%_]/) { |x| '!' + x } + '%'
         whr = []
@@ -38,8 +40,7 @@ class BanksController < ApplicationController
       @banks = @banks.where(whr.join(" or "))
     end
 
-    @retrieve_count = @banks.size
-
+    @retrieve_count = @banks.length
     # Set an order.
     if (@order.present?)
       @banks = @banks.order(@order[:column] + ' ' + @order[:type])
@@ -49,12 +50,23 @@ class BanksController < ApplicationController
     if (@conditions[:removelimit].blank? or @conditions[:removelimit] != 'true')
       @banks = @banks.limit(100)
     end
-    @display_count = @banks.size
+    @display_count = @banks.length
 
     respond_to do |format|
       format.html
       format.csv { send_data @banks.to_csv, type: 'text/csv; charset=shift_jis', filename: "banks_#{Time.now.strftime('%Y%m%d%H%M%S')}.csv" }
     end
+  end
+
+  # POST /banks/branches
+  # POST /banks/branches.json
+  def branches
+    bankname = params[:bankname]
+    bankcode = params[:bankcode]
+    bankcode = nil if bankcode.blank? 
+pp [bankname,bankcode]
+    @banks = Bank.find_all_by_bankname_and_bankcode(bankname, bankcode)
+
   end
 
   # GET /banks/1

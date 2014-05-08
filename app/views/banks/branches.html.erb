@@ -1,0 +1,79 @@
+<h1>
+  Listing banks
+  <span class="nav-link"><%= link_to 'New bank', new_bank_path, { :class => "btn btn-small" } %></span>
+</h1>
+
+<%= form_tag({:action => 'index'}, {method: "get", class: 'condition form-inline form-horizontal'}) do %>
+  <div class="container-bordered">
+    <%= hidden_field_tag 'order[column]', @order[:column]  %>
+    <%= hidden_field_tag 'order[type]', @order[:type]  %>
+    <%= content_tag(:span, ((@conditions[:incomplete].present? or @conditions[:removelimit].present?) ? '-' : '+'), { :class => "btn btn-small", :id => 'option_button', :title => 'Show options.' }) %>
+    <label>Keyword <%= text_field_tag('conditions[keyword]', @conditions[:keyword], {:size => 30, :class => "span2"}) %> </label> <%= submit_tag "Search", :class => "btn" %>
+    <div class="inline" style="height: 100%;"><%= @retrieve_count %> / <%= @total_count %></div>
+    &nbsp;&gt;&nbsp;
+    <%= link_to 'CSV Download', banks_path(format: 'csv', keyword: @conditions[:keyword]), { :class => "btn" } %>
+
+    <% opt_status = (@conditions[:incomplete].present? or @conditions[:removelimit].present?) ? ' active' : '' %>
+    <%= content_tag(:div, { :class => "options#{opt_status}", :id => 'option_container' }) do %>
+      <label><%= check_box_tag 'conditions[incomplete]', true, @conditions[:incomplete], { :id => 'options_incomplete' } %>Get only incomplete data.</label>
+      <span style="color: #bbb;">( Any of the AccountID, Fillname, Bank Info if not set. )</span>
+      <br />
+      
+      <label><%= check_box_tag 'conditions[removelimit]', true, @conditions[:removelimit], { :id => 'options_removelimit' } %>Show all banks.</label>
+      <span style="color: #bbb;">( If unchecked, only the first 100 will be displayed. )</span>
+      
+    <% end %>
+  </div>
+
+  <table class="table-bordered result">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Bank name<%= sort_button('bankname', @order) %></th>
+        <th>Branch name<%= sort_button('branchname', @order) %></th>
+        <th>Bank code<%= sort_button('bankcode', @order) %></th>
+        <th>Branch code<%= sort_button('branchcode', @order) %></th>
+        <th>Swiftcode<%= sort_button('swiftcode', @order) %></th>
+        <th>Address<%= sort_button('address', @order) %></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% idx = 0 %>
+      <% @banks.each do |bank| %>
+        <% idx += 1 %>
+        <tr>
+          <th class="text-right"><%= idx %></th>
+          <td><%=raw (@keyword.present? and bank.bankname.present?)   ? bank.bankname.gsub(/(#{@keyword})/i,   '<span class="keyword">\1</span>') : bank.bankname   %></td>
+          <td><%=raw (@keyword.present? and bank.branchname.present?) ? bank.branchname.gsub(/(#{@keyword})/i, '<span class="keyword">\1</span>') : bank.branchname %></td>
+          <td><%= bank.bankcode   %></td>
+          <td><%= bank.branchcode %></td>
+          <td><%=raw (@keyword.present? and bank.swiftcode.present?)  ? bank.swiftcode.gsub(/(#{@keyword})/i,  '<span class="keyword">\1</span>') : bank.swiftcode  %></td>
+          <td><%=raw (@keyword.present? and bank.address.present?)    ? bank.address.gsub(/(#{@keyword})/i,    '<span class="keyword">\1</span>') : bank.address    %></td>
+          <td><%= link_to 'Show', bank,  class: "btn_show" %></td>
+          <td><%= link_to 'Edit', edit_bank_path(bank),  class: "btn_edit" %></td>
+          <td><%= link_to 'Destroy', bank, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <% if @display_count < @retrieve_count %>
+        <tr>
+          <th class="text-center">:</th>
+
+          <td colspan="10">
+            <span style="color: #f63;">Subsequent data has been omitted.</span>
+            <span id="show_more" class="right btn btn-small"> more...</span>
+          </td>
+        </tr>
+      <% end %>
+    </tfoot>
+  </table>
+<% end %>
+
+<br>&nbsp;
+
+<a href="#" class="top_link">[ Go to Top ]</a>

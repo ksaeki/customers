@@ -201,9 +201,11 @@ table.nowrap td {
 }
 .clearfix {zoom:1;}
 .clearfix:after {
-  content: ""; 
+  content: "."; 
   display: block; 
   clear: both;
+  height: 0;
+  visibility: hidden;
 }
 
 #bank_suggest {
@@ -686,11 +688,59 @@ a.btn {
   margin-left: 5px;
 }
 .sort-btn{
+  cursor: pointer;
   width: 13px; 
   height:8px; 
   margin: 0; 
   padding: 0;
 }
+/**********************************************************
+ * colors
+ **********************************************************/
+.red     { color: red; }
+.blue    { color: blue; }
+.green   { color: green; }
+.black   { color: black; }
+.gray    { color: gray; }
+.silver  { color: silver; }
+.white   { color: white; }
+.magenta { color: magenta; }
+.purple  { color: purple; }
+.darkorange { color: darkorange; }
+
+.aliceblue { color: aliceblue; }
+.steelblue { color: steelblue; }
+.lavender  { color: lavender; }
+.violet    { color: violet; }
+.orange    { color: orange; }
+.moccasin  { color: moccasin; }
+.gold      { color: gold; }
+
+
+.bg-red     { background-color: color: red; }
+.bg-blue    { background-color: blue; }
+.bg-green   { background-color: green; }
+.bg-black   { background-color: black; }
+.bg-gray    { background-color: gray; }
+.bg-silver  { background-color: silver; }
+.bg-white   { background-color: white; }
+.bg-magenta { background-color: magenta; }
+.bg-purple  { background-color: purple; }
+.bg-darkorange { background-color: darkorange; }
+
+.bg-aliceblue { background-color: aliceblue; }
+.bg-steelblue { background-color: steelblue; }
+.bg-lavender  { background-color: lavender; }
+.bg-violet    { background-color: violet; }
+.bg-orange    { background-color: orange; }
+.bg-moccasin  { background-color: moccasin; }
+.bg-gold      { background-color: gold; }
+
+
+
+
+
+
 /**********************************************************
  * !important
  **********************************************************/

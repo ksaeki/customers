@@ -83,6 +83,13 @@ console.log(json);
   $(".clear-field").on('click', function() {
     $(this).prev().val('');
   });
+  $(window).on("beforeunload", function() {
+    customerGC();
+  });
+  function customerGC() {
+    alert('GC to fire');
+    $.ajax( { type : 'get', url : "/customers/gc", async: false } );
+  }
 });
 </script>
 
@@ -178,6 +185,13 @@ console.log(json);
         </div>
       </div>
   <div class="actions clearfix">
+    <div>
+      <strong class="label">Created at:</strong>
+      <%=raw @customer.created_at.present? ? @customer.created_at : "<span class=\"gray\">&lt;Not entered&gt;</span>" %>
+      <strong class="label">Updated at:</strong>
+      <%=raw @customer.updated_at.present? ? @customer.updated_at : "<span class=\"gray\">&lt;Not entered&gt;</span>" %>
+    </div>
+
     <%= f.submit %>
   </div>
     </div>
@@ -287,7 +301,6 @@ console.log(json);
         </div>
       </div>
 <% end %>
-
     </div>
   </div>
 
