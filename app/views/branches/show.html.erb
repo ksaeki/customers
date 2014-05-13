@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Bank:</strong>
+  <%= @branch.bank_id %>
+</p>
+
+<p>
+  <strong>Branchname:</strong>
+  <%= @branch.branchname %>
+</p>
+
+<p>
+  <strong>Branchcode:</strong>
+  <%= @branch.branchcode %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @branch.address %>
+</p>
+
+<p>
+  <strong>Swiftcode:</strong>
+  <%= @branch.swiftcode %>
+</p>
+
+<%= link_to 'Edit', edit_branch_path(@branch) %> |
+<%= link_to 'Back', branches_path %>

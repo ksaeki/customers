@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140212012903) do
+ActiveRecord::Schema.define(version: 20140513065408) do
 
   create_table "attachments", force: true do |t|
     t.integer  "customer_id"
@@ -35,6 +35,16 @@ ActiveRecord::Schema.define(version: 20140212012903) do
     t.datetime "updated_at"
     t.integer  "bankcode"
     t.integer  "branchcode"
+  end
+
+  create_table "branches", force: true do |t|
+    t.integer  "bank_id"
+    t.string   "branchname"
+    t.integer  "branchcode"
+    t.string   "address"
+    t.string   "swiftcode"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "customers", force: true do |t|

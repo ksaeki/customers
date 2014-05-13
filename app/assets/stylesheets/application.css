@@ -147,7 +147,36 @@ h4 {
 .alert.active {
   display: block;
 }
+@-webkit-keyframes shakey {
+      0% { top:  25px; }
+     25% { top:  35px; }
+     50% { top:  25px; }
+     75% { top:  35px; }
+    100% { top:  30px; }
+}
+@-moz-keyframes shakey {
+      0% { top:  25px; }
+     25% { top:  35px; }
+     50% { top:  25px; }
+     75% { top:  35px; }
+    100% { top:  30px; }
+}
 
+.messagearea.active {
+	/* Firefox 4+ */
+	-moz-animation-name: shakey;
+	-moz-animation-timing-function: ease-in;
+	-moz-animation-iteration-count: 1;
+	-moz-animation-direction: alternate;
+	-moz-animation-duration: 500ms;
+	
+	/* Webkit */
+	-webkit-animation-name: shakey;
+	-webkit-animation-timing-function: ease-in;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-direction: alternate;
+	-webkit-animation-duration: 500ms;
+}
 
 #bank_notice.create:after {
   color: darkorange;

@@ -7,13 +7,12 @@ class CustomersController < ApplicationController
   def index
     require 'pp'
 
-pp ['REF:' + request.referer.to_s]
+#pp ['REF:' + request.referer.to_s]
     @total_count = Customer.all.size
     @customers = Customer.includes(:bank)
     @conditions = params[:conditions] || session[:customer_conditions] || {}
     @order = params[:order] || session[:customer_order] || {column: '', type: ''}
     @keyword = @conditions[:keyword];
-pp [@order]
 
     session[:customer_conditions] = @conditions if @conditions.present?
     session[:customer_order]     = @order     if @order.present?
@@ -117,7 +116,6 @@ pp [@order]
     @banks = Bank.all.order('bankname, branchname')
 
     if @customer.save(:validate => false)
-pp [ @customer.id]
       redirect_to "/customers/#{@customer.id}/edit"
     end
   end
@@ -183,7 +181,6 @@ pp [ @customer.id]
       @customer.bank_id = @bank.id
       _c_params[:bank_id] = @bank.id
     end
-pp _c_params
 
     respond_to do |format|
       if @customer.update(_c_params)
@@ -208,6 +205,7 @@ pp _c_params
 
   def gc
     Customer.destroy_all(accountid: nil, fullname: nil, password: nil)
+    render :nothing => true
   end
 
   private

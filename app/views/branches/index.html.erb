@@ -1,0 +1,35 @@
+<h1>Listing branches</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Bank</th>
+      <th>Branchname</th>
+      <th>Branchcode</th>
+      <th>Address</th>
+      <th>Swiftcode</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @branches.each do |branch| %>
+      <tr>
+        <td><%= branch.bank_id %></td>
+        <td><%= branch.branchname %></td>
+        <td><%= branch.branchcode %></td>
+        <td><%= branch.address %></td>
+        <td><%= branch.swiftcode %></td>
+        <td><%= link_to 'Show', branch %></td>
+        <td><%= link_to 'Edit', edit_branch_path(branch) %></td>
+        <td><%= link_to 'Destroy', branch, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Branch', new_branch_path %>

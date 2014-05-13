@@ -1,4 +1,6 @@
 Customers::Application.routes.draw do
+  resources :branches
+
   get "dushboard/index"
   get "dushboard",   to: 'dushboard#index'
   devise_for :users
