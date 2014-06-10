@@ -4,7 +4,22 @@ class BranchesController < ApplicationController
   # GET /branches
   # GET /branches.json
   def index
-    @branches = Branch.all
+    @branches = Branch.order(:branchname).all
+  end
+
+  # GET /branches/select/1
+  # GET /branches/select/1.json
+  def select
+    bank_id   = params[:bank_id]   if params[:bank_id].present?
+ pp [bank_id]
+    @branches = Branch.order(:branchname).find_all_by_bank_id(bank_id)
+ pp [@branches]
+
+
+    respond_to do |format|
+      format.html { }
+      format.json { render :json => @branches }
+    end
   end
 
   # GET /branches/1

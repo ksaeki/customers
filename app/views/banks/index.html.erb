@@ -1,3 +1,45 @@
+<script type="text/javascript">
+$(function(){
+  $( "table.result tr" ).on('click', function(e) {
+    active_row = $( this );
+    active_row.siblings(".branch").remove();
+    cnt = active_row.children().length;
+    bid = active_row.data('bank_id'); 
+
+    request = $.getJSON("/branches/select.json", { "bank_id" : bid }, function(json){
+      tbody = $( "table.branches tbody" ).empty();
+      active_row.after('<tr class="branch"><td colspan="' + cnt + '"></td></tr>');
+      list = '<table class="table-bordered branches">' + 
+            '<thead><tr><th>No.</th><th>Branch name</th><th>Swiftcode</th><th></th><th></th><th></th></tr></thead>' + 
+            '<tbody>';
+
+      for(var i = 0; i < json.length; i++) {
+        list +=  '<tr class="branch" colspan="' + cnt + '">' + 
+                 '<th>' + ( i + 1 ) + '</th>' + 
+                 '<td>[' + json[i].id + '] ' +  json[i].branchname + '</td>' + 
+                 '<td>' + json[i].swiftcode + '</td>' + 
+                 '<td><a class="btn_show" href="/branches/' + json[i].id + '">Show</a></td>' + 
+                 '<td><a class="btn_show" href="/branches/' + json[i].id + '/edit">Edit</a></td>' + 
+                 '<td><a data-confirm="Are you sure?" data-method="delete" href="/branches/' + json[i].id + ' rel="nofollow">Delete</a></td>' + 
+                 '</tr>';
+      }
+      list += '</tbody>' + 
+            '<tfoot></tfoot>' + 
+          '</table>';
+      $( list ).appendTo( "table.result tr.branch > td:first" );
+       $(window).scrollTop(active_row.offset().top);
+
+    });
+  });
+
+  $( ".sort-btn"  ).on('click', function(e) {
+//    alert($(this).data('type'));
+    $("#order_column").val($(this).data('column'));
+    $("#order_type").val($(this).data('type'));
+    $("form.condition").submit();
+  });
+});
+</script>
 <h1>
   Listing banks
   <span class="nav-link"><%= link_to 'New bank', new_bank_path, { :class => "btn btn-small" } %></span>
@@ -30,11 +72,8 @@
       <tr>
         <th>No.</th>
         <th>Bank name<%= sort_button('bankname', @order) %></th>
-        <th>Branch name<%= sort_button('branchname', @order) %></th>
-        <th>Bank code<%= sort_button('bankcode', @order) %></th>
-        <th>Branch code<%= sort_button('branchcode', @order) %></th>
         <th>Swiftcode<%= sort_button('swiftcode', @order) %></th>
-        <th>Address<%= sort_button('address', @order) %></th>
+        <th>Branches</th>
         <th></th>
         <th></th>
         <th></th>
@@ -45,14 +84,13 @@
       <% idx = 0 %>
       <% @banks.each do |bank| %>
         <% idx += 1 %>
-        <tr>
+        <tr data-bank_id="<%=  bank.id %>">
           <th class="text-right"><%= idx %></th>
-          <td><%=raw (@keyword.present? and bank.bankname.present?)   ? bank.bankname.gsub(/(#{@keyword})/i,   '<span class="keyword">\1</span>') : bank.bankname   %></td>
-          <td><%=raw (@keyword.present? and bank.branchname.present?) ? bank.branchname.gsub(/(#{@keyword})/i, '<span class="keyword">\1</span>') : bank.branchname %></td>
-          <td><%= bank.bankcode   %></td>
-          <td><%= bank.branchcode %></td>
+          <td<%=raw " title='#{bank.bankname}'" if bank.bankname.length > 43 %>>
+              <%=raw (@keyword.present? and bank.bankname.present?)   ? truncate(bank.bankname, :length => 43).gsub(/(#{@keyword})/i,   '<span class="keyword">\1</span>') : truncate(bank.bankname, :length => 43)   %>
+          </td>
           <td><%=raw (@keyword.present? and bank.swiftcode.present?)  ? bank.swiftcode.gsub(/(#{@keyword})/i,  '<span class="keyword">\1</span>') : bank.swiftcode  %></td>
-          <td><%=raw (@keyword.present? and bank.address.present?)    ? bank.address.gsub(/(#{@keyword})/i,    '<span class="keyword">\1</span>') : bank.address    %></td>
+          <td class="text-right"><%= bank.branches.length %></td>
           <td><%= link_to 'Show', bank,  class: "btn_show" %></td>
           <td><%= link_to 'Edit', edit_bank_path(bank),  class: "btn_edit" %></td>
           <td><%= link_to 'Destroy', bank, method: :delete, data: { confirm: 'Are you sure?' } %></td>

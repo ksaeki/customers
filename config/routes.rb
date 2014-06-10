@@ -1,14 +1,10 @@
 Customers::Application.routes.draw do
-  resources :branches
-
   get "dushboard/index"
   get "dushboard",   to: 'dushboard#index'
   devise_for :users
 
   resources :users, :only => :index
-
-  post  'branches', to: 'banks#branches'
-
+  
   get  'download/:aid(/:forced)', to: 'utility#download'
   get  'download/:aid', to: 'utility#download'
   post 'upload',   to: 'utility#upload'
@@ -18,6 +14,12 @@ Customers::Application.routes.draw do
     collection do
       get 'branches'
       get 'search'
+    end
+  end
+
+  resources :branches do
+    collection do
+      get 'select'
     end
   end
 

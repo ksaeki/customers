@@ -207,12 +207,17 @@ table.table-bordered tr {
 }
 
 table.table-bordered tr.active {
-  background: #e0ffff;
+  background: #d0deee;
 }
 
 table.table-bordered tr:hover,
 table.table-bordered tr.active:hover {
-  background: #e6e6fa;
+  background: #eed0ee;
+}
+
+table.table-bordered tr.branch > td {
+  background: #ffffff;
+  padding: 10px;
 }
 
 table.table-bordered th,
@@ -222,6 +227,10 @@ table.table-bordered td {
 }
 table.table-bordered th {
   background-color: #f5deb3;
+}
+
+table.table-bordered.branches th {
+  background-color: #d0ffd0;
 }
 
 table.nowrap th, 
@@ -746,7 +755,7 @@ a.btn {
 .gold      { color: gold; }
 
 
-.bg-red     { background-color: color: red; }
+.bg-red     { background-color: red; }
 .bg-blue    { background-color: blue; }
 .bg-green   { background-color: green; }
 .bg-black   { background-color: black; }

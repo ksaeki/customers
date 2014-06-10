@@ -4,6 +4,7 @@ source 'http://rubygems.org'
 gem 'rails', '4.0.0'
 gem 'thin'
 gem 'devise'
+gem 'pry-rails'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

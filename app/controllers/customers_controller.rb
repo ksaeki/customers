@@ -1,11 +1,11 @@
 class CustomersController < ApplicationController
   before_action :set_customer, only: [:show, :edit, :update, :destroy]
+  before_action :gc, only: [:show, :index, :search]
   before_action :authenticate_user!
 
   # GET /customers
   # GET /customers.json
   def index
-    require 'pp'
 
 #pp ['REF:' + request.referer.to_s]
     @total_count = Customer.all.size
@@ -122,8 +122,11 @@ class CustomersController < ApplicationController
 
   # GET /customers/1/edit
   def edit
-    @customer = Customer.find(params[:id], :include => :attachments, :order => "attachments.created_at")
-    @attaches = Attachment.all.where('customer_id=?',(params[:id]))
+    #@customer = Customer.find(params[:id], :include => :attachments, :order => "attachments.created_at")
+    @customer = Customer.find(params[:id])
+    @attachments = @customer.attachments.select("id, customer_id, filename, filesize, contenttype, extension, created_at, updated_at")
+    #@attachments = Attachment.where("customer_id = ?", params[:id]).select("id, customer_id, filename, filesize, contenttype, extension, created_at, updated_at")
+    #binding.pry  # Console でデバッグ
   end
 
   # GET /customers/password
@@ -140,7 +143,6 @@ class CustomersController < ApplicationController
   def create
 
     @customer = Customer.new(customer_params)
-
     if @customer.bank_id.blank?
       if bank_params.present?
         @bank = Bank.new(bank_params)
@@ -167,6 +169,7 @@ class CustomersController < ApplicationController
         end
       end
     else
+      gc()
       render action: 'new'
     end
   end
@@ -174,8 +177,9 @@ class CustomersController < ApplicationController
   # PATCH/PUT /customers/1
   # PATCH/PUT /customers/1.json
   def update
+    @customer = Customer.find_by(id: params[:id])
     _c_params = customer_params
-    if @customer.bank_id.blank? and bank_params.present?
+    if customer_params[:bank_id].blank? and bank_params[:bankname].present?
       @bank = Bank.new(bank_params)
       @bank.save
       @customer.bank_id = @bank.id
@@ -203,12 +207,11 @@ class CustomersController < ApplicationController
     end
   end
 
-  def gc
-    Customer.destroy_all(accountid: nil, fullname: nil, password: nil)
-    render :nothing => true
-  end
-
   private
+    def gc
+      Customer.destroy_all(accountid: nil, fullname: nil, password: nil)
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_customer
       @customer = Customer.includes(:bank).find(params[:id])

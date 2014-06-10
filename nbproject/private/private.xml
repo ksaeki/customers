@@ -3,11 +3,31 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/_rails/customers/app/models/bank.rb</file>
-            <file>file:/C:/_rails/customers/app/models/customer.rb</file>
+            <file>file:/C:/_rails/customers/app/models/branch.rb</file>
+            <file>file:/C:/_rails/customers/config/database.yml</file>
+            <file>file:/C:/_rails/customers/app/views/customers/_form.html.erb</file>
+            <file>file:/C:/_rails/customers/app/views/customers/show.json.jbuilder</file>
+            <file>file:/C:/_rails/customers/app/views/dushboard/index.html.erb</file>
+            <file>file:/C:/_rails/customers/app/controllers/banks_controller.rb</file>
+            <file>file:/C:/_rails/customers/app/views/branches/select.json.jbuilder</file>
             <file>file:/C:/_rails/customers/app/views/customers/index.html.erb</file>
             <file>file:/C:/_rails/customers/app/controllers/customers_controller.rb</file>
+            <file>file:/C:/_rails/customers/app/views/banks/edit.html.erb</file>
+            <file>file:/C:/_rails/customers/app/models/attachment.rb</file>
             <file>file:/C:/_rails/customers/app/controllers/application_controller.rb</file>
+            <file>file:/C:/_rails/customers/app/controllers/branches_controller.rb</file>
+            <file>file:/C:/_rails/customers/app/views/banks/_form.html.erb</file>
+            <file>file:/C:/_rails/customers/app/models/bank.rb</file>
+            <file>file:/C:/_rails/customers/app/views/banks/index.html.erb</file>
+            <file>file:/C:/_rails/customers/Gemfile</file>
+            <file>file:/C:/_rails/customers/app/assets/stylesheets/application.css</file>
+            <file>file:/C:/_rails/customers/app/controllers/dushboard_controller.rb</file>
+            <file>file:/C:/_rails/customers/app/assets/javascripts/application.js</file>
+            <file>file:/C:/_rails/customers/app/assets/javascripts/customers.js</file>
+            <file>file:/C:/_rails/customers/app/controllers/utility_controller.rb</file>
+            <file>file:/C:/_rails/customers/app/models/customer.rb</file>
+            <file>file:/C:/_rails/customers/app/views/customers/index.json.jbuilder</file>
+            <file>file:/C:/_rails/customers/config/environments/development.rb</file>
         </group>
     </open-files>
 </project-private>

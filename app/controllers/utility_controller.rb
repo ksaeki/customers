@@ -2,7 +2,7 @@ class UtilityController < ApplicationController
 require 'pp'
   # 添付ファイルのダウンロード  
   def download
-    @attach = Attachment.find(params[:aid])
+    @attach = Attachment.unscoped.find(params[:aid])
     ctype = (@attach.contenttype.present? ? @attach.contenttype : 'application/octet-stream')
     send_data(@attach.rawdata, filename: @attach.filename, type: ctype, disposition: (params[:forced] ? :attachment : :inline))
   end

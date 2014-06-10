@@ -2,6 +2,7 @@ require 'csv'
 require 'pp'
 
 class Bank < ActiveRecord::Base
+  has_many :branches, :dependent => :destroy
 
   validates :bankname, :presence => true
 

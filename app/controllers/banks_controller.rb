@@ -5,7 +5,8 @@ class BanksController < ApplicationController
   # GET /banks.json
   def index
     require 'pp'
-    @banks = Bank.all
+    #@banks = Bank.all
+    @banks = Bank.includes(:branches)
     #@banks = Bank.select("count(*) as cnt, bankname, bankcode").group(:bankname, :bankcode)
 
     @conditions = params[:conditions] || session[:bank_conditions] || {}

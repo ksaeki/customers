@@ -22,7 +22,7 @@
 </div>
 
 <div class="box-bordered inline">
-  <div class="caption">Serch Multiple Customers</div>
+  <div class="caption">Search Multiple Customers</div>
     <%= form_tag({controller: "customers", action: 'index'}, {method: "get", class: 'condition form-inline form-horizontal', style: 'vertical-align: baseline;'}) do %>
       <%= text_area_tag 'conditions[multipleid]', '', {:size => "15x10", style: 'vertical-align: bottom;'} %>
       <%= submit_tag "Search", {:class => "btn", style: 'overflow:visible;vertical-align: bottom;'} %>
@@ -48,6 +48,8 @@
   <div class="caption">Infomation</div>
   <table>
     <tbody>
+      <tr><td>2014.05.08</td><td>[ add ]</td><td>入出金用レポート追加</td></tr>
+      <tr><td>2014.05.08</td><td>[ fix ]</td><td>顧客データの作成日と更新日を表示するように変更</td></tr>
       <tr><td>2014.04.18</td><td>[ add ]</td><td>一覧のソート機能を追加</td></tr>
       <tr><td>2014.04.14</td><td>[ add ]</td><td>複数顧客検索機能を追加</td></tr>
       <tr><td>2014.03.13</td><td>[ fix ]</td><td>顧客情報の更新処理時に銀行情報の変更が正しく動作しない不具合を修正</td></tr>
